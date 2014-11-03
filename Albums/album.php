@@ -1,12 +1,13 @@
 <?php
 
 // @todo: Finir update + methode magique
+// @todo: maniere plus propre de gerer le cas ou l'album n'existe pas''
 
 require '../Acces.php';
 require '../PDO/Bdd.php';
 require '../Tools/Tools.php';
 
-const TABLE = 'liste_bd';
+        const TABLE = 'liste_bd';
 
 // Requete
 Acces::accesControl();
@@ -47,17 +48,66 @@ if (Tools::isPostRequest()) {
 function addTome($nom_tome) {
 
     $dbh = Bdd::getInstance();
-
-    // On regarde que la BD existe bien
-    $query = "SELECT possede,total  FROM " . TABLE . " WHERE titre = :titre";
     $params = array('titre' => "$nom_tome");
-    $result = $dbh->queryWithParam($query, $params, true);
-    $res = BDD::resultOneRow($result);
+    $res = getTome($nom_tome);
 
-    // Existe et le nombre de tome ne dépasse pas le total
-    if ($res->possede < $res->total) {
-
+    // le nombre de tome ne dépasse pas le total
+    if ($res && $res->possede < $res->total) {
         $query = "UPDATE " . TABLE . " SET possede = possede + 1 WHERE titre = :titre";
         $dbh->queryWithParam($query, $params);
+    }
+}
+
+/**
+ * Met à jour le nombre de tome-1
+ * @param type $nom_tome
+ */
+function removeTome($nom_tome) {
+
+    $dbh = Bdd::getInstance();
+    $params = array('titre' => "$nom_tome");
+    $res = getTome($nom_tome);
+    
+    // Existe et le nombre de tome ne passe pas en dessous de 0
+    if ($res && $res->possede > 0) {
+        $query = "UPDATE " . TABLE . " SET possede = possede -1 WHERE titre = :titre";
+        $dbh->queryWithParam($query, $params);
+    }
+}
+
+/**
+ * Retourne vrai si l'album passé en paramètre existe dans la BD
+ * @param type $nom_tome
+ */
+function albumExiste($nom_tome) {
+
+    $dbh = Bdd::getInstance();
+
+    // On regarde que la BD existe bien
+    $query = "SELECT possede,total  FROM " . TABLE . " WHERE titre = :titre ";
+    $params = array('titre' => "$nom_tome");
+    $result = $dbh->queryWithParam($query, $params, true);
+
+    return (BDD::rowCount($result) == 1);
+}
+
+/**
+ * Retourne les infos d'un tome
+ * @param type $nom_tome
+ * @return type
+ */
+function getTome($nom_tome) {
+
+    if (albumExiste($nom_tome)) {
+
+        $dbh = Bdd::getInstance();
+
+        $query = "SELECT possede,total  FROM " . TABLE . " WHERE titre = :titre";
+        $params = array('titre' => "$nom_tome");
+        $result = $dbh->queryWithParam($query, $params, true);
+
+        return BDD::resultOneRow($result);
+    } else {
+        header("HTTP/1.0 404 Not Found");
     }
 }

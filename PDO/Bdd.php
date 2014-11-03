@@ -3,9 +3,10 @@
 /**
  * BD
  * @todo Mode Prod
+ * @todo Message erreur
  */
 
-include 'confBdd.php';
+include 'ConfBdd.php';
 
 class Bdd {
     
@@ -65,7 +66,16 @@ class Bdd {
      * @return type
      */
     public static function resultOneRow($result){
-        return $result[0];
+        return (empty($result)?false:$result[0]);
+    }
+    
+    /**
+     * Retourne le nombre de ligne résultante
+     * @param type $result
+     * @return int
+     */
+    public static function rowCount($result){
+        return count($result);
     }
     
     
