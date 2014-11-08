@@ -60,6 +60,20 @@ class Bdd {
     }
     
     /**
+     * Update
+     * @param type $query
+     * @param type $params
+     */
+    public function update($query,$params){
+        $req = $this->dbh->prepare($query);
+        $req->execute($params);
+    }
+    
+    public function errorInfo(){
+        return $this->dbh->errorInfo();
+    }
+    
+    /**
      * Retourne la ligne des requetes qui ne retourne qu'une ligne
      * utilisée pour plus de clarté dans le code
      * @param type $result
