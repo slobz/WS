@@ -2,161 +2,98 @@
 
 // @todo: maniere plus propre de gerer le cas ou l'album n'existe pas''
 // @todo: Classe album pour gérer tout ça?
-// @todo: tableau associatif pour pas avoir des noms de fonction degueux
+
 
 require '../Acces.php';
 require '../PDO/Bdd.php';
 require '../Tools/Tools.php';
+require '../Entity/Album/Album.php';
+require_once '../Test/bootstrap.php'; // ...
 
-        const TABLE = 'liste_bd';
+use Entity\Album\Album;
+
+const TABLE = 'album';
+        const TABLEU = 'Entity\Album\Album';
 
 // Requete
 Acces::accesControl();
 
-$methodes_autorisees = array('addPossede', 'removePossede', 'add', 'remove', 'addAlbum');
+/**
+ * Contient les méthodes appelé par le WS
+ */
+$methodes_autorisees = array('addPossede' => 'ajoutAlbumPossede',
+    'removePossede' => 'retraitAlbumPossede',
+    'add' => 'ajoutTotalAlbum',
+    'remove' => 'retraitTotalAlbum',
+    'addAlbum' => 'ajouterNouvelAlbum');
 
+// Connecteur avec la table
+//$albumRepo = $entityManager->getRepository(TABLEU);
 // POST
 if (Tools::isPostRequest()) {
 
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
 
-    if (in_array($data->action, $methodes_autorisees)) {
-
+    if (array_key_exists($data->action, $methodes_autorisees)) {
         $methode = $data->action;
-
-        // Appel de la fonction qui va bien
-        $function = $methode . "Tome";
-        $t = $function($data);
+        
+        // Appel de la fonction qui va bien en fonction de $methode
+        $result = $methodes_autorisees[$methode]($entityManager,$data);
         header('Content-Type: application/json');
-        echo $t;
+        echo $result;
     } else {
         header($_SERVER['SERVER_PROTOCOL'] . ' 501 Not Implemented', true, 501);
     }
 
     exit;
 } else { // GET
-    $dbh = Bdd::getInstance();
-    $query = " SELECT * FROM " . TABLE;
-
-    $json_data = $dbh::queryToJson($dbh->query($query, true));
-
+    $albums = getAllAlbums($entityManager);
     header('Content-Type: application/json');
-    echo $json_data;
+    echo $albums;
     exit;
 }
 
 /**
- * Met a jour le nombre de tome possede de +1
- * @param type $tome_name
+ * Met à jour le nombre de tome possede +1
+ * @param doctrine $em
+ * @param array $data
  */
-function addPossedeTome($data) {
+function addTomePossede($em, $data) {
 
-    $nom_tome = $data->titre;
-    $dbh = Bdd::getInstance();
-    $params = array('titre' => "$nom_tome");
-    $res = getTome($nom_tome);
+    $repo = $em->getRepository(TABLEU);
+    $nomTome = $data->titre;
+    $tome = $repo->findOneBy(array('titre' => $nomTome));
 
-    // le nombre de tome ne dépasse pas le total
-    if ($res && $res->possede < $res->total) {
-        $query = "UPDATE " . TABLE . " SET possede = possede + 1 WHERE titre = :titre";
-        $dbh->queryWithParam($query, $params);
-    }
-}
-
-/**
- * Met à jour le nombre de tome total de +1
- * @param string $nom_tome
- */
-function addTome($data) {
-
-    $nom_tome = $data->titre;
-    $dbh = Bdd::getInstance();
-    $params = array('titre' => "$nom_tome");
-    $res = getTome($nom_tome);
-
-    if ($res) {
-        $query = "UPDATE " . TABLE . " SET total = total + 1 WHERE titre = :titre";
-        $dbh->queryWithParam($query, $params);
-    }
-}
-
-/**
- * Met à jour le nombre de tome total de -1
- * @param string $nom_tome
- */
-function removeTome($data) {
-
-    $nom_tome = $data->titre;
-    $dbh = Bdd::getInstance();
-    $params = array('titre' => "$nom_tome");
-    $res = getTome($nom_tome);
-
-    // le nombre de tome ne dépasse pas le total
-    if ($res && $res->total > 1) {
-
-        // Si on a tous les tomes et qu'on diminu le total, on diminu aussi le nombre possede
-        if ($res->possede == $res->total) {
-            removePossedeTome($nom_tome);
-        }
-
-        $query = "UPDATE " . TABLE . " SET total = total - 1 WHERE titre = :titre";
-        $dbh->queryWithParam($query, $params);
-    }
-}
-
-/**
- * Met à jour le nombre de tome possedede -1
- * @param type $nom_tome
- */
-function removePossedeTome($data) {
-
-    $nom_tome = $data->titre;
-    $dbh = Bdd::getInstance();
-    $params = array('titre' => "$nom_tome");
-    $res = getTome($nom_tome);
-
-    // Existe et le nombre de tome ne passe pas en dessous de 0
-    if ($res && $res->possede > 0) {
-        $query = "UPDATE " . TABLE . " SET possede = possede -1 WHERE titre = :titre";
-        $dbh->queryWithParam($query, $params);
-    }
-}
-
-/**
- * Retourne vrai si l'album passé en paramètre existe dans la BD
- * @param type $nom_tome
- */
-function albumExiste($nom_tome) {
-
-    $dbh = Bdd::getInstance();
-
-    // On regarde que la BD existe bien
-    $query = "SELECT possede,total  FROM " . TABLE . " WHERE titre = :titre ";
-    $params = array('titre' => "$nom_tome");
-    $result = $dbh->queryWithParam($query, $params, true);
-
-    return (BDD::rowCount($result) == 1);
-}
-
-/**
- * Retourne les infos d'un tome
- * @param type $nom_tome
- * @return type
- */
-function getTome($nom_tome) {
-
-    if (albumExiste($nom_tome)) {
-
-        $dbh = Bdd::getInstance();
-
-        $query = "SELECT possede,total  FROM " . TABLE . " WHERE titre = :titre";
-        $params = array('titre' => "$nom_tome");
-        $result = $dbh->queryWithParam($query, $params, true);
-
-        return BDD::resultOneRow($result);
-    } else {
+    if (empty($tome)) {
         header("HTTP/1.0 404 Not Found");
+    } else {
+        if ($tome->getPossede() < $tome->getTotal()) {
+            $tome->addTomePossede();
+            $em->persist($tome);
+            $em->flush();
+        }
+    }
+}
+
+/**
+ * Met à jour le nombre de tome possede -1
+ * @param doctrine $em
+ * @param array $data
+ */
+function retraitAlbumPossede($em, $data) {
+    $repo = $em->getRepository(TABLEU);
+    $nomTome = $data->titre;
+    $tome = $repo->findOneBy(array('titre' => $nomTome));
+
+    if (empty($tome)) {
+        header("HTTP/1.0 404 Not Found");
+    } else {
+        if ($tome->getPossede() > 0) {
+            $tome->removeTomePossede();
+            $em->persist($tome);
+            $em->flush();
+        }
     }
 }
 
@@ -171,32 +108,89 @@ function addAlbumTome($data) {
     $tomeTotaux = $album->tomeTotal;
     $tomePossede = $album->tomePossede;
     $image = $album->image;
-    
+
     $terminee = false;
-    if(isset($album->terminee))
+    if (isset($album->terminee))
         $terminee = true;
-        
+
     //$terminee = $album->terminee;
     //
     // Controle des données
     if ($titre && $tomeTotaux && $tomePossede && $image &&
             is_int($tomeTotaux) && is_int($tomePossede)) {
-        
+
         $dbh = Bdd::getInstance();
-        $query = "INSERT INTO ".TABLE." (total,possede,fini,prochaine_sortie,titre,img_path) "
+        $query = "INSERT INTO " . TABLE . " (total,possede,fini,prochaine_sortie,titre,img_path) "
                 . "VALUES(:total,:possede,:fini,:prochaine_sortie,:titre,:img_path)";
-        
+
         $params = array('titre' => $titre,
-                        'total' => $tomeTotaux,
-                        'possede' => $tomePossede,
-                        'fini'  => $terminee,
-                        'prochaine_sortie' => '0000-00-00',
-                        'img_path' => $image);
-        
-        $dbh->update($query,$params);
-        
+            'total' => $tomeTotaux,
+            'possede' => $tomePossede,
+            'fini' => $terminee,
+            'prochaine_sortie' => '0000-00-00',
+            'img_path' => $image);
+
+        $dbh->update($query, $params);
     } else {
         return false;
     }
+}
 
+/**
+ * Incremente le nombre de tome total de +1
+ * @param type $em
+ * @param array $data
+ */
+function ajoutTotalAlbum($em, $data) {
+
+    $repo = $em->getRepository(TABLEU);
+    $nomTome = $data->titre;
+    $tome = $repo->findOneBy(array('titre' => $nomTome));
+
+    if (empty($tome)) {
+        header("HTTP/1.0 404 Not Found");
+    } else {
+        $tome->addTomeTotal();
+        $em->persist($tome);
+        $em->flush();
+    }
+}
+
+/**
+ * Decremente le nombre de tome total de -1
+ * @param type $em
+ * @param array $data
+ */
+function retraitTotalAlbum($em, $data) {
+
+    $repo = $em->getRepository(TABLEU);
+    $nomTome = $data->titre;
+    $tome = $repo->findOneBy(array('titre' => $nomTome));
+
+    if (empty($tome)) {
+        header("HTTP/1.0 404 Not Found");
+    } else {
+        if ($tome->getTotal() > 1) {
+            $tome->removeTomeTotal();
+            $em->persist($tome);
+            $em->flush();
+        }
+    }
+}
+
+/**
+ * Retourne un JSON cotenant la liste de tous les albums
+ * @param type $entityManager
+ * @return array
+ */
+function getAllAlbums($em) {
+
+    $repo = $em->getRepository(TABLEU);
+    $albums = $repo->findAll();
+
+    foreach ($albums as $album) {
+        $jsonData[] = $album->toArray();
+    }
+
+    return json_encode($jsonData);
 }

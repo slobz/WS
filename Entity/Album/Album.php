@@ -1,5 +1,7 @@
 <?php
 
+namespace Entity\Album;
+
 /** @Entity 
  *  @Table(name="album")
  * 
@@ -179,4 +181,38 @@ class Album {
     {
         return $this->fini;
     }
+ 
+    public function addTomePossede(){
+        $this->possede++;
+    }
+    
+    public function removeTomePossede(){
+        $this->possede--;
+    }
+    
+    public function addTomeTotal(){
+        $this->total++;
+    }
+    
+    public function removeTomeTotal(){
+        if($this->total == $this->possede){
+            $this->removeTomePossede();   
+        }
+        
+        $this->total--;
+    }
+    
+    /**
+     * Convertir notre objet en tableau associatif
+     * @return array
+     */
+    public function toArray(){
+        
+        foreach ($this as $k=>$v){
+            $array[$k] = $v;
+        }
+        
+        return $array;
+    }
+    
 }
