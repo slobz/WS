@@ -26,8 +26,8 @@ class Album {
     /** @Column(length=140) */
     private $img_path;
     
-    /** @Column(type="integer") */
-    private $prochaine_sortie = null;
+    /** @Column(type="date") */
+    private $prochaine_sortie = '0000-00-00';
     
     /** @Column(type="boolean") */
     private $fini = false;

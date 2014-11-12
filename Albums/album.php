@@ -1,9 +1,5 @@
 <?php
 
-// @todo: maniere plus propre de gerer le cas ou l'album n'existe pas''
-// @todo: Classe album pour gérer tout ça?
-
-
 require '../Acces.php';
 require '../PDO/Bdd.php';
 require '../Tools/Tools.php';
@@ -37,9 +33,9 @@ if (Tools::isPostRequest()) {
 
     if (array_key_exists($data->action, $methodes_autorisees)) {
         $methode = $data->action;
-        
+
         // Appel de la fonction qui va bien en fonction de $methode
-        $result = $methodes_autorisees[$methode]($entityManager,$data);
+        $result = $methodes_autorisees[$methode]($entityManager, $data);
         header('Content-Type: application/json');
         echo $result;
     } else {
@@ -98,41 +94,30 @@ function retraitAlbumPossede($em, $data) {
 }
 
 /**
- * Ajout d'un nouvel album dans la BDD
- * @param type $album
+ * Ajoute un nouvel album
+ * @param doctrine $em
+ * @param array $data
  */
-function addAlbumTome($data) {
+function ajouterNouvelAlbum($em, $data) {
 
-    $album = $data->album;
-    $titre = $album->titre;
-    $tomeTotaux = $album->tomeTotal;
-    $tomePossede = $album->tomePossede;
-    $image = $album->image;
+    $albumToAdd = $data->album;
 
-    $terminee = false;
-    if (isset($album->terminee))
-        $terminee = true;
+    if (isset($albumToAdd->titre) && isset($albumToAdd->tomePossede) &&
+            isset($albumToAdd->tomeTotal) && isset($albumToAdd->image)) {
 
-    //$terminee = $album->terminee;
-    //
-    // Controle des données
-    if ($titre && $tomeTotaux && $tomePossede && $image &&
-            is_int($tomeTotaux) && is_int($tomePossede)) {
+        $album = new Album();
+        $album->setTitre($albumToAdd->titre);
+        $album->setPossede($albumToAdd->tomePossede);
+        $album->setTotal($albumToAdd->tomeTotal);
+        $album->setImgPath($albumToAdd->image);
 
-        $dbh = Bdd::getInstance();
-        $query = "INSERT INTO " . TABLE . " (total,possede,fini,prochaine_sortie,titre,img_path) "
-                . "VALUES(:total,:possede,:fini,:prochaine_sortie,:titre,:img_path)";
+        if (isset($albumToAdd->terminee))
+            $album->setFini($albumToAdd->terminee);
 
-        $params = array('titre' => $titre,
-            'total' => $tomeTotaux,
-            'possede' => $tomePossede,
-            'fini' => $terminee,
-            'prochaine_sortie' => '0000-00-00',
-            'img_path' => $image);
-
-        $dbh->update($query, $params);
-    } else {
-        return false;
+        $em->persist($album);
+        $em->flush();
+    }else{
+        header("HTTP/1.1 400 BAD REQUEST");
     }
 }
 
