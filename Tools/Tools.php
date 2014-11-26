@@ -8,7 +8,7 @@
 class Tools {
 
     static $url_dev = 'localhost';
-    static $url_prod = '';
+    static $url_prod = 'brikabrokz';
 
     static function isPostRequest() {
         return $_SERVER['REQUEST_METHOD'] === 'POST';

@@ -4,12 +4,11 @@ require '../Acces.php';
 require '../PDO/Bdd.php';
 require '../Tools/Tools.php';
 require '../Entity/Album/Album.php';
-require_once '../Test/bootstrap.php'; // ...
+require_once '../BDD/bootstrap.php'; // ...
 
 use Entity\Album\Album;
 
-const TABLE = 'album';
-        const TABLEU = 'Entity\Album\Album';
+const TABLE = 'Entity\Album\Album';
 
 // Requete
 Acces::accesControl();
@@ -23,8 +22,6 @@ $methodes_autorisees = array('addPossede' => 'ajoutAlbumPossede',
     'remove' => 'retraitTotalAlbum',
     'addAlbum' => 'ajouterNouvelAlbum');
 
-// Connecteur avec la table
-//$albumRepo = $entityManager->getRepository(TABLEU);
 // POST
 if (Tools::isPostRequest()) {
 
@@ -55,18 +52,18 @@ if (Tools::isPostRequest()) {
  * @param doctrine $em
  * @param array $data
  */
-function addTomePossede($em, $data) {
+function ajoutAlbumPossede($em, $data) {
 
-    $repo = $em->getRepository(TABLEU);
-    $nomTome = $data->titre;
-    $tome = $repo->findOneBy(array('titre' => $nomTome));
+    $repo = $em->getRepository(TABLE);
+    $nomAlbum = $data->titre;
+    $album = $repo->findOneBy(array('titre' => $nomAlbum));
 
-    if (empty($tome)) {
+    if (empty($album)) {
         header("HTTP/1.0 404 Not Found");
     } else {
-        if ($tome->getPossede() < $tome->getTotal()) {
-            $tome->addTomePossede();
-            $em->persist($tome);
+        if ($album->getPossede() < $album->getTotal()) {
+            $album->addTomePossede();
+            $em->persist($album);
             $em->flush();
         }
     }
@@ -78,16 +75,16 @@ function addTomePossede($em, $data) {
  * @param array $data
  */
 function retraitAlbumPossede($em, $data) {
-    $repo = $em->getRepository(TABLEU);
-    $nomTome = $data->titre;
-    $tome = $repo->findOneBy(array('titre' => $nomTome));
+    $repo = $em->getRepository(TABLE);
+    $nomAlbum = $data->titre;
+    $album = $repo->findOneBy(array('titre' => $nomAlbum));
 
-    if (empty($tome)) {
+    if (empty($album)) {
         header("HTTP/1.0 404 Not Found");
     } else {
-        if ($tome->getPossede() > 0) {
-            $tome->removeTomePossede();
-            $em->persist($tome);
+        if ($album->getPossede() > 0) {
+            $album->removeTomePossede();
+            $em->persist($album);
             $em->flush();
         }
     }
@@ -128,15 +125,15 @@ function ajouterNouvelAlbum($em, $data) {
  */
 function ajoutTotalAlbum($em, $data) {
 
-    $repo = $em->getRepository(TABLEU);
-    $nomTome = $data->titre;
-    $tome = $repo->findOneBy(array('titre' => $nomTome));
+    $repo = $em->getRepository(TABLE);
+    $nomAlbum = $data->titre;
+    $album = $repo->findOneBy(array('titre' => $nomAlbum));
 
-    if (empty($tome)) {
+    if (empty($album)) {
         header("HTTP/1.0 404 Not Found");
     } else {
-        $tome->addTomeTotal();
-        $em->persist($tome);
+        $album->addTomeTotal();
+        $em->persist($album);
         $em->flush();
     }
 }
@@ -148,16 +145,16 @@ function ajoutTotalAlbum($em, $data) {
  */
 function retraitTotalAlbum($em, $data) {
 
-    $repo = $em->getRepository(TABLEU);
-    $nomTome = $data->titre;
-    $tome = $repo->findOneBy(array('titre' => $nomTome));
+    $repo = $em->getRepository(TABLE);
+    $nomAlbum = $data->titre;
+    $album = $repo->findOneBy(array('titre' => $nomAlbum));
 
-    if (empty($tome)) {
+    if (empty($album)) {
         header("HTTP/1.0 404 Not Found");
     } else {
-        if ($tome->getTotal() > 1) {
-            $tome->removeTomeTotal();
-            $em->persist($tome);
+        if ($album->getTotal() > 1) {
+            $album->removeTomeTotal();
+            $em->persist($album);
             $em->flush();
         }
     }
@@ -170,7 +167,7 @@ function retraitTotalAlbum($em, $data) {
  */
 function getAllAlbums($em) {
 
-    $repo = $em->getRepository(TABLEU);
+    $repo = $em->getRepository(TABLE);
     $albums = $repo->findAll();
 
     foreach ($albums as $album) {
