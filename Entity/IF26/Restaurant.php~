@@ -1,0 +1,45 @@
+<?php
+
+namespace Entity\IF26;
+
+/** @Entity 
+ *  @Table(name="restaurant")
+ * 
+ **/
+class Restaurant {
+
+    /** @Id 
+     *  @Column(type="integer") 
+     *  @GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /** @Column(length=140) */
+    private $nom;
+    
+    /** @Column(type="integer") */
+    private $commentaires;
+    
+    /** @Column(type="integer") */
+    private $images;
+    
+    
+    /** @Column(length=255) */
+    private $description;
+    
+    
+    
+    /**
+     * Convertir notre objet en tableau associatif
+     * @return array
+     */
+    public function toArray(){
+        
+        foreach ($this as $k=>$v){
+            $array[$k] = $v;
+        }
+        
+        return $array;
+    }
+    
+}
