@@ -61,5 +61,19 @@ class Commentaire {
     public function setNote($note) {
         $this->note = $note;
     }
+    
+    
+    /**
+     * Convertir notre objet en tableau associatif
+     * @return array
+     */
+    public function toArray(){
+        
+        foreach ($this as $k=>$v){
+            $array[$k] = $v;
+        }
+        
+        return $array;
+    }
 
 }

@@ -16,7 +16,7 @@ Acces::accesControl();
 /**
  * Contient les méthodes appelé par le WS
  */
-$methodes_autorisees = array('addPossede' => 'ajoutAlbumPossede',
+$methodesAutorisees = array('addPossede' => 'ajoutAlbumPossede',
     'removePossede' => 'retraitAlbumPossede',
     'add' => 'ajoutTotalAlbum',
     'remove' => 'retraitTotalAlbum',
@@ -28,11 +28,11 @@ if (Tools::isPostRequest()) {
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
 
-    if (array_key_exists($data->action, $methodes_autorisees)) {
+    if (array_key_exists($data->action, $methodesAutorisees)) {
         $methode = $data->action;
 
         // Appel de la fonction qui va bien en fonction de $methode
-        $result = $methodes_autorisees[$methode]($entityManager, $data);
+        $result = $methodesAutorisees[$methode]($entityManager, $data);
         header('Content-Type: application/json');
         echo $result;
     } else {
@@ -171,7 +171,7 @@ function getAllAlbums($em) {
     $albums = $repo->findAll();
 
     foreach ($albums as $album) {
-        $jsonData[] = $album->toArray();
+        $jsonData[] = Tools::toArray($album);
     }
 
     return json_encode($jsonData);

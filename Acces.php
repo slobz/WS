@@ -21,5 +21,15 @@ class Acces {
             header($url);
         }
     }
+    
+    /**
+     * Retourne vrai si la clé d'api est correcte
+     * @param type $apiKey
+     * @param type $keyGiven
+     * @return boolean
+     */
+    static function isApiKeyValid($apiKey, $keyGiven){
+        return ($apiKey == $keyGiven);
+    }
 
 }
