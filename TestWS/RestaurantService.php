@@ -52,13 +52,15 @@ class RestaurantService extends Service {
                 "commentaires" => $tableauCommentaires
             );
         } else {
-
-            $json = array('restaurants');
             
             $restaurants = $repo->findAll();
             foreach ($restaurants as $restaurant) {
-                $json['restaurants'] += $restaurant->toArray();
+                $tableauRestaurants[] = $restaurant->toArray();
             }
+            
+            
+            $json = array('restaurants' => $tableauRestaurants);
+            
         }
         return json_encode($json);
     }

@@ -45,7 +45,7 @@ class Ws {
         if(!$this->serviceExiste($service)){
             $json = array(
                 'error' => true,
-                'libelleError' => 'Service inconnue'
+                'libelleError' => 'Service inconnu'
             );
             echo json_encode($json);exit;
         }
