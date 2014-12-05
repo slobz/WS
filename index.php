@@ -6,7 +6,7 @@ $params = array();
 $ws = new WS();
 $service = $_GET['service'];
 
-if (Tools::isProd()) {
+if (Tools::isPostRequest()) {
     $request_body = file_get_contents('php://input');
     $params = json_decode($request_body);
 }else{
