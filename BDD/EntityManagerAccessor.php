@@ -3,7 +3,7 @@
 namespace BDD;
 
 require_once 'ConfBdd.php';
-require_once "../vendor/autoload.php";
+require_once "vendor/autoload.php";
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;

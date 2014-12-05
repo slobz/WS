@@ -3,8 +3,8 @@
 namespace Services;
 
 require_once 'Service.php';
-require_once '../Entity/IF26/Restaurant.php';
-require_once '../Entity/IF26/Commentaire.php';
+require_once 'Entity/IF26/Restaurant.php';
+require_once 'Entity/IF26/Commentaire.php';
 
 use Entity\IF26\Restaurant;
 use Entity\IF26\Commentaire;

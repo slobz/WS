@@ -1,7 +1,6 @@
 <?php
 
-require_once '../Acces.php';
-require_once '../PDO/Bdd.php';
+require_once 'Acces.php';
 require_once 'Tools/Tools.php';
 require_once 'Services/ServiceFactory.php';
 
