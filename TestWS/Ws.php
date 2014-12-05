@@ -2,9 +2,10 @@
 
 require_once '../Acces.php';
 require_once '../PDO/Bdd.php';
-require_once '../Tools/Tools.php';
-require_once '../BDD/bootstrap.php';
-require_once 'ServiceFactory.php';
+require_once 'Tools/Tools.php';
+require_once 'Services/ServiceFactory.php';
+
+use Services\ServiceFactory;
 
 class Ws {
 

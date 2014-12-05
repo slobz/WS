@@ -1,5 +1,7 @@
 <?php
 
+namespace Services;
+
 abstract class Service {
 
     const ENTITE_COMMENTAIRE = 'Entity\IF26\Commentaire';

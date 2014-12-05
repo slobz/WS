@@ -1,5 +1,7 @@
 <?php
 
+namespace Services;
+
 require_once 'Service.php';
 
 class CommentaireService extends Service {

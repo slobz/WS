@@ -1,9 +1,12 @@
 <?php
 
-require_once '../BDD/bootstrap2.php';
+namespace Services;
+
 require_once 'RestaurantService.php';
 require_once 'CommentaireService.php';
-require_once 'EntityManagerAccessor.php';
+require_once 'BDD/EntityManagerAccessor.php';
+
+use BDD\EntityManagerAccessor;
 
 class ServiceFactory{
     

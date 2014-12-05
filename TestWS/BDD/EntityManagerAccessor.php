@@ -1,5 +1,7 @@
 <?php
 
+namespace BDD;
+
 require_once 'ConfBdd.php';
 require_once "../vendor/autoload.php";
 
