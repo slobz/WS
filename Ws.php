@@ -9,7 +9,7 @@ use Services\ServiceFactory;
 class Ws {
 
     protected $apiKey = 'toto';
-    protected $services = array('commentaire', 'restaurant');
+    protected $services = array('commentaire', 'restaurant','utilisateur');
 
     public function __construct() {
         Acces::accesControl();
@@ -60,9 +60,7 @@ class Ws {
     public function getRequest($service, $params) {
 
         $objetService = ServiceFactory::getService($service);
-        $id = isset($params['id'])? $params['id']:null;
-        
-        echo $objetService->get($id);
+        echo $objetService->get($params);
 
     }
 

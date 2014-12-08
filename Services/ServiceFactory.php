@@ -4,6 +4,7 @@ namespace Services;
 
 require_once 'RestaurantService.php';
 require_once 'CommentaireService.php';
+require_once 'UtilisateurService.php';
 require_once 'BDD/EntityManagerAccessor.php';
 
 use BDD\EntityManagerAccessor;
@@ -17,6 +18,7 @@ class ServiceFactory{
         switch ($service){
             case 'commentaire': return new CommentaireService($entityManager);
             case 'restaurant': return new RestaurantService($entityManager);
+            case 'utilisateur': return new UtilisateurService($entityManager);
         }
     }
     

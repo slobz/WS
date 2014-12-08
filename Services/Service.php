@@ -6,6 +6,7 @@ abstract class Service {
 
     const ENTITE_COMMENTAIRE = 'Entity\IF26\Commentaire';
     const ENTITE_RESTAURANT  = 'Entity\IF26\Restaurant';
+    const ENTIT_UTILISATEUR  = 'Entity\IF26\Utilisateur';
     
     protected $methodeAutorisees;
     
@@ -18,14 +19,9 @@ abstract class Service {
         $this->methodeAutorisees[] = 'add';
     }
 
-    abstract function add();
-
     public function isMethodeAutorisee($methode){
         return in_array($methode, $this->methodeAutorisees);
     }
-    
-    
-    abstract function get($id = null);
     
     public function setData($data){
         $this->data = $data;

@@ -35,6 +35,12 @@ class Restaurant
     /** @Column(length=140) */
     private $description;
 
+    /** @Column(type="float")  */
+    private $x;
+    
+    /** @Column(type="float")  */
+    private $y;
+    
     
     public function __construct() {
         $this->commentaires = new ArrayCollection();
@@ -141,6 +147,23 @@ class Restaurant
     public function getDescription()
     {
         return $this->description;
+    }
+    
+    
+    public function getX(){
+        return $this->x;
+    }
+    
+    public function getY(){
+        return $this->y;
+    }
+    
+    public function setX($x){
+        $this->x = $x;
+    }
+    
+    public function setY($y){
+        $this->y = $y;
     }
     
     

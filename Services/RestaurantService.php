@@ -9,6 +9,9 @@ require_once 'Entity/IF26/Commentaire.php';
 use Entity\IF26\Restaurant;
 use Entity\IF26\Commentaire;
 
+//@todo: Id restaurant inconnu
+
+
 class RestaurantService extends Service {
 
     public function __construct($em) {
@@ -35,10 +38,12 @@ class RestaurantService extends Service {
     }
 
     //@override
-    public function get($id = null) {
+    public function get($params) {
 
         $repo = $this->entityManager->getRepository(Service::ENTITE_RESTAURANT);
-
+        $id = $params['id'];
+        
+        
         if (!empty($id)) {
 
             $restaurant = $repo->find($id);
