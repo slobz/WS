@@ -8,8 +8,8 @@ require_once 'Entity/IF26/Commentaire.php';
 
 use Entity\IF26\Restaurant;
 use Entity\IF26\Commentaire;
+use Tools;
 
-//@todo: Id restaurant inconnu
 
 
 class RestaurantService extends Service {
@@ -41,8 +41,7 @@ class RestaurantService extends Service {
     public function get($params) {
 
         $repo = $this->entityManager->getRepository(Service::ENTITE_RESTAURANT);
-        $id = $params['id'];
-        
+        $id = Tools::getValueFromArray($params,'id');
         
         if (!empty($id)) {
 

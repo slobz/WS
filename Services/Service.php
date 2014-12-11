@@ -6,7 +6,7 @@ abstract class Service {
 
     const ENTITE_COMMENTAIRE = 'Entity\IF26\Commentaire';
     const ENTITE_RESTAURANT  = 'Entity\IF26\Restaurant';
-    const ENTIT_UTILISATEUR  = 'Entity\IF26\Utilisateur';
+    const ENTITE_UTILISATEUR  = 'Entity\IF26\Utilisateur';
     
     protected $methodeAutorisees;
     
