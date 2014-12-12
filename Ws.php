@@ -69,7 +69,7 @@ class Ws {
         $objetService = ServiceFactory::getService($service);
         
         if($objetService->isMethodeAutorisee($methode)){
-            $objetService->$methode($params);
+            echo $objetService->$methode($params);
         }else{
              $json = array(
                 'error' => true,

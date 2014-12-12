@@ -28,6 +28,13 @@ class Commentaire {
     **/
     private $restaurant;
     
+    /**
+    * @ManyToOne(targetEntity="Utilisateur", inversedBy="commentaires")
+    * @JoinColumn(name="utilisateur_id", referencedColumnName="id")
+    **/
+    private $utilisateur;
+    
+    
     public function getRestaurant() {
         return $this->restaurant;
     }
@@ -36,6 +43,13 @@ class Commentaire {
         $this->restaurant = $restaurant;
     }
 
+    public function getUtilisateur(){
+        return $this->utilisateur;
+    }
+    
+    public function setUtilisateur($utilisateur){
+        $this->utilisateur = $utilisateur;
+    }
     
     
     public function getId() {

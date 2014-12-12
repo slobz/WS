@@ -21,12 +21,34 @@ class Utilisateur {
 
     /** @Column(length=140) */
     private $pwd;
-    
-    public function getId(){
+
+    /**
+     * @OneToMany(targetEntity="Commentaire", mappedBy="utilisateur")
+     * */
+    private $commentaires;
+
+    /**
+     * Set commentaires
+     * @param integer $commentaires
+     * @return Restaurant
+     */
+    public function setCommentaires($commentaires) {
+        $this->commentaires = $commentaires;
+    }
+
+    /**
+     * Get commentaires
+     * @return integer 
+     */
+    public function getCommentaires() {
+        return $this->commentaires;
+    }
+
+    public function getId() {
         return $this->id;
     }
-    
-    public function setId($id){
+
+    public function setId($id) {
         $this->id = $id;
     }
 
