@@ -4,6 +4,9 @@ namespace Services;
 
 require_once 'Service.php';
 
+use Tools;
+use Entity\IF26\Commentaire;
+
 class CommentaireService extends Service {
     
     
@@ -14,22 +17,24 @@ class CommentaireService extends Service {
 
     //@todo return
     //@override
-    public function add() {
+    public function add($params) {
 
-        $commentaireToAdd = $this->data->commentaire;
-
-        if (isset($commentaireToAdd->texte) && isset($commentaireToAdd->note) &&
-                isset($commentaireToAdd->idRestaurant) && isset($commentaireToAdd->idUtilisateur)) {
+        $texte = Tools::getValueFromArray($params,'texte');
+        $note = 5;
+        $idRestaurant = Tools::getValueFromArray($params,'idResto');
+        $idUtilisateur = Tools::getValueFromArray($params,'idUser');
+        
+        if (!empty($text) && !empty($note) && !empty($idRestaurant) && !empty($idUser)){
 
             $repo = $this->entityManager->getRepository(Service::ENTITE_RESTAURANT);
-            $restaurant = $repo->find($commentaireToAdd->idRestaurant);
+            $restaurant = $repo->find($idRestaurant);
             
             $repo = $this->entityManager->getRepository(Service::ENTITE_UTILISATEUR);
-            $utilisateur = $repo->find($commentaireToAdd->idUtilisateur);
+            $utilisateur = $repo->find($idUtilisateur);
 
             $commentaire = new Commentaire();
-            $commentaire->setNote($commentaireToAdd->note);
-            $commentaire->setTexte($commentaireToAdd->texte);
+            $commentaire->setNote($note);
+            $commentaire->setTexte($texte);
             $commentaire->setRestaurant($restaurant);
             $commentaire->setUtilisateur($utilisateur);
 

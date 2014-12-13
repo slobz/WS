@@ -10,8 +10,6 @@ use Entity\IF26\Restaurant;
 use Entity\IF26\Commentaire;
 use Tools;
 
-
-
 class RestaurantService extends Service {
 
     public function __construct($em) {
@@ -19,20 +17,20 @@ class RestaurantService extends Service {
     }
 
     //@override
-    public function add() {
+    public function add($params) {
 
-        $restaurantToAdd = $this->data->restaurant;
-
-        if (isset($restaurantToAdd->nom) && isset($restaurantToAdd->description)) {
+        $nom = Tools::getValueFromArray($params,'nom');
+        $description = Tools::getValueFromArray($params,'desc');
+        
+        if (!empty($nom) && !empty($description)) {
             
             $restaurant = new Restaurant();
-            $restaurant->setNom($restaurantToAdd->nom);
-            $restaurant->setDescription($restaurantToAdd->description);
+            $restaurant->setNom($nom);
+            $restaurant->setDescription($description);
 
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
         } else {
-            
             header("HTTP/1.1 400 BAD REQUEST");
         }
     }
