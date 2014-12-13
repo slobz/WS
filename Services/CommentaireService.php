@@ -24,7 +24,7 @@ class CommentaireService extends Service {
         $idRestaurant = Tools::getValueFromArray($params,'idResto');
         $idUtilisateur = Tools::getValueFromArray($params,'idUser');
         
-        if (!empty($text) && !empty($note) && !empty($idRestaurant) && !empty($idUser)){
+        if (!empty($texte) && !empty($note) && !empty($idRestaurant) && !empty($idUtilisateur)){
 
             $repo = $this->entityManager->getRepository(Service::ENTITE_RESTAURANT);
             $restaurant = $repo->find($idRestaurant);
