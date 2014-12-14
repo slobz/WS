@@ -15,12 +15,13 @@ class CommentaireService extends Service {
         
     }
 
-    //@todo return
+    //@todo Resto/User vide?
+    //@todo Un seul commentaire personne/restaurant
     //@override
     public function add($params) {
 
         $texte = Tools::getValueFromArray($params,'texte');
-        $note = 5;
+        $note = Tools::getValueFromArray($params, 'note');
         $idRestaurant = Tools::getValueFromArray($params,'idResto');
         $idUtilisateur = Tools::getValueFromArray($params,'idUser');
         
@@ -39,6 +40,11 @@ class CommentaireService extends Service {
             $commentaire->setUtilisateur($utilisateur);
 
             $this->entityManager->persist($commentaire);
+            $this->entityManager->flush();
+            
+            // Mise à jour de la note moyenne du restaurant
+            $restaurant->updateNoteMoyenne();
+            $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
             
             $json = array(

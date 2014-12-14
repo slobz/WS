@@ -89,5 +89,20 @@ class Commentaire {
         
         return $array;
     }
+    
+    /*
+    public function getAverageGrade($em, $id ){
+        
+        $qb = $em->createQueryBuilder();
+        $qb->select('AVERAGE(note) as moyenne');
+        $qb->from('commentaire','c');
+        $qb->where('c.restaurant_id','id');
+        $qb->setParameter('id',$id);
+        
+        $note = $qb->getResult();
+        
+        return $note;
+        
+    } */   
 
 }

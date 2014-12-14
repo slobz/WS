@@ -32,6 +32,9 @@ class Restaurant
     /** @Column(type="integer",nullable=true)  */
     private $images;
 
+    /** @Column(type="float",nullable=true)  */
+    private $note;
+    
     /** @Column(length=140) */
     private $description;
 
@@ -166,8 +169,16 @@ class Restaurant
         $this->y = $y;
     }
     
+    public function getNote(){
+        return $this->note;
+    }
     
-        /**
+    public function setNote($note){
+        $this->note = $note;
+    }
+
+
+    /**
      * Convertir notre objet en tableau associatif
      * @return array
      */
@@ -179,4 +190,20 @@ class Restaurant
         
         return $array;
     }
+    
+    public function updateNoteMoyenne(){
+        
+        $note = 0;
+        $nbCommentaire = count($this->commentaires);
+        
+        if($nbCommentaire == 0){
+            $this->note = 0;
+        }else{
+            foreach ($this->commentaires as $commentaire){
+                $note += $commentaire->getNote();
+            }
+            $this->note = $note/$nbCommentaire;
+        }
+    }
+    
 }
