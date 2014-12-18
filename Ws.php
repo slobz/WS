@@ -41,8 +41,6 @@ class Ws {
         
         header('Content-Type: application/json');
         
-        echo "@@@ $service @@@";
-        
         // Controle du service
         if(!$this->serviceExiste($service)){
             $json = array(

@@ -20,19 +20,32 @@ class RestaurantService extends Service {
     public function add($params) {
 
         $nom = Tools::getValueFromArray($params,'nom');
-        $description = Tools::getValueFromArray($params,'desc');
+        $description = Tools::getValueFromArray($params,'description');
+        $coordonneeX = Tools::getValueFromArray($params, 'x');
+        $coordonneeY = Tools::getValueFromArray($params, 'y');
         
-        if (!empty($nom) && !empty($description)) {
+        
+        if (!empty($nom) && !empty($description) && !empty($coordonneeX) && !empty($coordonneeY)) {
             
             $restaurant = new Restaurant();
             $restaurant->setNom($nom);
             $restaurant->setDescription($description);
-
+            $restaurant->setX($coordonneeX);
+            $restaurant->setY($coordonneeY);
+            
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
+            
+              $json = array(
+                'error' => false
+            );
+            
         } else {
             header("HTTP/1.1 400 BAD REQUEST");
         }
+        
+        return  $json;
+        
     }
 
     //@override

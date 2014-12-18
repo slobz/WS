@@ -17,8 +17,17 @@
     <input type="hidden" name="idUser" value="8"/>
     <input type="hidden" name="idResto" value="1"/>
     <input type="hidden" name="service" value="commentaire"/>
-    
     <input type="submit" text="ajouter">
-     
 </form>
 
+<!-- Ajout restaurant -->
+<form action="../index.php" method="POST">
+    Nom: <input type="text" name="nom"/></br>
+    Desc   : <input type="text" name="description"/><br/>
+    X   : <input type="text" name="x"/><br/>
+    Y   : <input type="text" name="y"/><br/>
+    
+    <input type="hidden" name="methode" value="add"/>
+    <input type="hidden" name="service" value="restaurant"/>
+    <input type="submit" text="ajouter">
+</form>
