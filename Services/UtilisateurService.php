@@ -115,7 +115,7 @@ class UtilisateurService extends Service {
         if ($t_hasher->CheckPassword($pwd,$user->getPwd())) { 
             $json = array(
                 'error' => 'false',
-                'token' => 'tokenvalue...'
+                'token' => $user->getId()
             );
         } else {
             $json = array(
