@@ -31,3 +31,13 @@
     <input type="hidden" name="service" value="restaurant"/>
     <input type="submit" text="ajouter">
 </form>
+
+
+<!-- Test Regex -->
+<?php
+echo preg_match("/[a-zA-Z0-9]{6,15}/", "seb");
+echo preg_match("/[a-zA-Z0-9]{6,15}/", "sebastien");
+echo preg_match("/^[a-zA-Z0-9]{6,15}$/", "2435434dsdé");
+echo preg_match("/[a-zA-Z0-9]{6,15}/", "sebastienddddddddddddddddd!");
+
+?>

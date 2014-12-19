@@ -24,6 +24,18 @@ class UtilisateurService extends Service {
         $login = Tools::getValueFromArray($params, 'login');
         $pwd = Tools::getValueFromArray($params, 'pwd');
 
+        // On controle la validité du login: 6caractère et composé uniquement de
+        // lettre et de chiffre
+        $loginOk = preg_match("/^[a-zA-Z0-9]{6,15}$/",$login);
+        
+        if(!$loginOk){
+             $json = array(
+                'error' => true,
+                'libelleError' => 'Le login doit uniquement coporter des lettres et des chiffres'
+            );
+            return $json;
+        }
+        
         // On controle l'unicité du login
         $repo = $this->entityManager->getRepository(Service::ENTITE_UTILISATEUR);
         $user = $repo->findOneBy(array('login' => $login));
