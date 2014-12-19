@@ -17,7 +17,6 @@ class UtilisateurService extends Service {
     }
 
     //@todo SANITIZE?
-    //@todo >= 6 caracs
     //@override
     public function add($params) {
         
@@ -31,10 +30,22 @@ class UtilisateurService extends Service {
         if(!$loginOk){
              $json = array(
                 'error' => true,
-                'libelleError' => 'Le login doit uniquement coporter des lettres et des chiffres'
+                'libelleError' => 'Le login doit uniquement comporter des lettres et des chiffres'
             );
-            return $json;
+            return json_encode($json);
         }
+        
+        // On controle la validité du mot de passe entre 6 et 60 caractères
+        $pwdOk = preg_match("/^.{6,60}$/", $pwd);
+        if(!$pwdOk){
+             $json = array(
+                'error' => true,
+                'libelleError' => 'La longueur du mot de passe doit être comprise entre 6 et 60 caractères.'
+            );
+            return json_encode($json);
+        }
+        
+        
         
         // On controle l'unicité du login
         $repo = $this->entityManager->getRepository(Service::ENTITE_UTILISATEUR);

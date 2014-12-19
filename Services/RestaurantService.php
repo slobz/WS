@@ -44,7 +44,7 @@ class RestaurantService extends Service {
             header("HTTP/1.1 400 BAD REQUEST");
         }
         
-        return  $json;
+        return json_encode($json);
         
     }
 
