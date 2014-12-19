@@ -9,7 +9,7 @@ use Services\ServiceFactory;
 class Ws {
 
     protected $apiKey = 'toto';
-    protected $services = array('commentaire', 'restaurant','utilisateur');
+    protected $services = array('commentaire', 'restaurant','utilisateur','favoris');
 
     public function __construct() {
         Acces::accesControl();

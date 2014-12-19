@@ -35,9 +35,12 @@
 
 <!-- Test Regex -->
 <?php
-echo preg_match("/[a-zA-Z0-9]{6,15}/", "seb");
-echo preg_match("/[a-zA-Z0-9]{6,15}/", "sebastien");
 echo preg_match("/^[a-zA-Z0-9]{6,15}$/", "2435434dsdé");
-echo preg_match("/[a-zA-Z0-9]{6,15}/", "sebastienddddddddddddddddd!");
+echo "<br/>";
+
+echo preg_match("/^.{6,60}$/", "fdsfddsqdsqdqsd:;,:;-'(-'");
+echo "<br/>";
+
+
 
 ?>

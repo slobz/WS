@@ -27,6 +27,21 @@ class Utilisateur {
      * */
     private $commentaires;
 
+     /**
+     * @ManyToMany(targetEntity="Restaurant")
+     * @JoinTable(name="utilisateur_fav_restaurant",
+     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="restaurant_id", referencedColumnName="id")}
+     *      )
+     **/
+    private $restaurantsFavoris;
+
+
+    public function __construct() {
+         $this->restaurantsFavoris = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+
     /**
      * Set commentaires
      * @param integer $commentaires
@@ -68,4 +83,16 @@ class Utilisateur {
         $this->pwd = $pwd;
     }
 
+    public function getRestaurantsFavoris(){
+        return $this->restaurantsFavoris;
+    }
+    
+    public function setRestaurantsFavoris($restaurants){
+        $this->restaurantsFavoris = $restaurants;
+    }   
+    
+    public function addRestaurantsFavoris($restaurant){
+        $this->restaurantsFavoris[] = $restaurant;
+    }
+    
 }
