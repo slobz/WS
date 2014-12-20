@@ -36,13 +36,13 @@ class FavorisService extends Service {
     
     public function get($params) {
 
-        $login = Tools::getValueFromArray($params, 'login');
+        $idUtilisateur = Tools::getValueFromArray($params, 'idUtilisateur');
 
         // Pas de login specifiée
-        if (empty($login)) {
+        if (empty($idUtilisateur)) {
             $json = array(
                 'error' => true,
-                'libelleError' => 'Le login doit etre specifie'
+                'libelleError' => 'Id non precisé'
             );
             return json_encode($json);
         }
@@ -50,13 +50,13 @@ class FavorisService extends Service {
         // On recupère l'id de l'utilisateur qui correspont au login
         // On regarde si le login existe
         $repo = $this->entityManager->getRepository(Service::ENTITE_UTILISATEUR);
-        $user = $repo->findOneBy(array('login' => $login));
+        $user = $repo->findOneBy(array('id'=>$idUtilisateur));
 
-        // Login inconnu
+        // Utilisateur
         if (empty($user)) {
             $json = array(
                 'error' => true,
-                'libelleError' => 'Login inconnu'
+                'libelleError' => 'Utilisateur inconnu'
             );
 
             return json_encode($json);
