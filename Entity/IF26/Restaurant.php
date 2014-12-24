@@ -38,6 +38,15 @@ class Restaurant
     /** @Column(length=140) */
     private $description;
 
+    /** @Column(length=140) */
+    private $ville;
+    
+    /** @Column(length=140) */
+    private $rue;
+
+    /** @Column(type="integer") */
+    private $cp;
+    
     /** @Column(type="float")  */
     private $x;
     
@@ -177,7 +186,34 @@ class Restaurant
         $this->note = $note;
     }
 
-
+    public function getCp(){
+        return $this->cp;
+    }
+    
+    
+    public function getVille(){
+        return $this->ville;
+    }
+    
+    
+    public function getRue(){
+        return $this->rue;
+    }
+    
+    public function setRue($rue){
+        $this->rue = $rue;
+    }
+    
+    
+    public function setVille($ville){
+        $this->ville = $ville;
+    }
+    
+    
+    public function setCp($cp){
+        $this->cp = $cp;
+    }
+    
     /**
      * Convertir notre objet en tableau associatif
      * @return array

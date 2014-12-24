@@ -23,15 +23,21 @@ class RestaurantService extends Service {
         $description = Tools::getValueFromArray($params,'description');
         $coordonneeX = Tools::getValueFromArray($params, 'x');
         $coordonneeY = Tools::getValueFromArray($params, 'y');
+        $cp = Tools::getValueFromArray($params, 'cp');
+        $ville = Tools::getValueFromArray($params, 'ville');
+        $rue = Tools::getValueFromArray($params, 'rue');
         
-        
-        if (!empty($nom) && !empty($description) && !empty($coordonneeX) && !empty($coordonneeY)) {
+        if (!empty($nom) && !empty($description) && !empty($coordonneeX) && !empty($coordonneeY) 
+            && !empty($rue) && !empty($ville) && !empty($cp)) {
             
             $restaurant = new Restaurant();
             $restaurant->setNom($nom);
             $restaurant->setDescription($description);
             $restaurant->setX($coordonneeX);
             $restaurant->setY($coordonneeY);
+            $restaurant->setCp($cp);
+            $restaurant->setVille($ville);
+            $restaurant->setRue($rue);
             
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
