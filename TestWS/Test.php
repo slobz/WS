@@ -1,4 +1,4 @@
-<!-- Ahout user -->
+﻿<!-- Ahout user -->
 <form action="../index.php" method="POST">
     Login: <input type="text" name="login"/></br>
     MDP: <input type="text" name="pwd"/></br>
@@ -26,9 +26,23 @@
     Desc   : <input type="text" name="description"/><br/>
     X   : <input type="text" name="x"/><br/>
     Y   : <input type="text" name="y"/><br/>
+    Rue   : <input type="text" name="rue"/><br/>
+    CP   :  <input type="text" name="cp"/><br/>
+    VILLE   : <input type="text" name="ville"/><br/>
     
     <input type="hidden" name="methode" value="add"/>
     <input type="hidden" name="service" value="restaurant"/>
+    <input type="submit" text="ajouter">
+</form>
+
+<!-- Ajout image -->
+<form action="../index.php" method="post">
+    IMG. B64 <input type="text" name="image"/>
+    <input type="hidden" name="idRestaurant" value="1"/>
+    <input type="hidden" name="nom" value="yolo"/>
+    <input type="hidden" name="service" value="image"/>
+    <input type="hidden" name="methode" value="add"/>
+    <input type="submit" text="k">
     <input type="submit" text="ajouter">
 </form>
 

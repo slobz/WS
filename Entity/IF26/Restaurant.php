@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 require_once 'Commentaire.php';
+require_once 'Image.php';
 
 /** @Entity 
  *  @Table(name="restaurant")
@@ -29,7 +30,9 @@ class Restaurant
      **/
     private $commentaires;
 
-    /** @Column(type="integer",nullable=true)  */
+    /**
+     * @OneToMany(targetEntity="Image", mappedBy="restaurant")
+     **/
     private $images;
 
     /** @Column(type="float",nullable=true)  */
@@ -56,6 +59,7 @@ class Restaurant
     
     public function __construct() {
         $this->commentaires = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
     
 
