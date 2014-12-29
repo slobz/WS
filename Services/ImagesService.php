@@ -67,6 +67,8 @@ class ImagesService extends Service {
 
         function get($params) {
             
+            // On retourne le chemin, l'appli chargera l'image via l'URL
+            
         }
 
     }

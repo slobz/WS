@@ -47,7 +47,7 @@ class Restaurant
     /** @Column(length=140) */
     private $rue;
 
-    /** @Column(type="integer") */
+    /** @Column(length=140) */
     private $cp;
     
     /** @Column(type="float")  */
