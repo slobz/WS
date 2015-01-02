@@ -33,11 +33,14 @@ class CommentaireService extends Service {
 
             // On regarde si l'utilisateur n'a pas déja posté un commentaire concernant le restaurant
             if ($utilisateur->hasCommented($idRestaurant)) {
+
                 $json = array(
                     'error' => true,
-                    'libelleError' => 'Restaurant déja commenté'
+                    'libelleError' => 'Déja commenté'
                 );
             } else {
+
+
 
                 $commentaire = new Commentaire();
                 $commentaire->setNote($note);

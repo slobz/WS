@@ -63,15 +63,9 @@ class RestaurantService extends Service {
         if (!empty($id)) {
 
             $restaurant = $repo->find($id);
-            $commentaires = $restaurant->getCommentaires();
-
-            foreach ($commentaires as $commentaire) {
-                $tableauCommentaires[] = $commentaire->toArray();
-            }
 
             $json = array(
-                "restaurant" => $restaurant->toArray(),
-                "commentaires" => $tableauCommentaires
+                "restaurant" => $restaurant->toArray()
             );
         } else {
             
