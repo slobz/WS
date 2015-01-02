@@ -71,7 +71,25 @@ class CommentaireService extends Service {
     }
 
     public function get($id = null) {
-        
+
+        if (empty($id)) {
+            $json = array('error' => true,
+                'libelleError' => 'Id manquant');
+            return json_encode($json);
+        }
+
+        // On recupère les commentaires associées au restaurant
+        $repo = $this->entityManager->getRepository(Service::ENTITE_RESTAURANT);
+        $restaurant = $repo->findOneBy(array('id' => $id));
+        $repo = $this->entityManager->getRepository(Service::ENTITE_COMMENTAIRE);
+        $commentaires = $repo->findBy(array('restaurant' => $restaurant));
+        $commentaireTableau = array();
+
+        foreach ($commentaires as $commentaire) {
+            $commentaireTableau[] = $commentaire->toArray2();
+        }
+
+        return json_encode($commentaireTableau);
     }
 
 }

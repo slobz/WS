@@ -90,6 +90,21 @@ class Commentaire {
         return $array;
     }
     
+    
+    /**
+     * To array qui ne recupère pas toutes les infos de l'objet
+     */
+    public function toArray2(){
+        
+        foreach ($this as $k=>$v){
+            if($k != "restaurant" && $k != "utilisateur")
+                $array[$k] = $v;
+        }
+        
+        return $array;
+    }
+
+
     /*
     public function getAverageGrade($em, $id ){
         
