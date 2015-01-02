@@ -95,4 +95,19 @@ class Utilisateur {
         $this->restaurantsFavoris[] = $restaurant;
     }
     
+        
+    public function hasCommented($idRestaurant){
+        
+        $commentaires = $this->getCommentaires();
+            
+        foreach ($commentaires as $commentaire){
+            if($commentaire->getRestaurant()->getId() == $idRestaurant){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    
 }
