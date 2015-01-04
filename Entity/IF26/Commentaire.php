@@ -19,7 +19,7 @@ class Commentaire {
     /** @Column(length=140) */
     private $texte;
     
-    /** @Column(type="integer") */
+    /** @Column(type="float") */
     private $note;
     
     /**
