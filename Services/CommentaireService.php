@@ -89,7 +89,7 @@ class CommentaireService extends Service {
             $commentaireTableau[] = $commentaire->toArray2();
         }
 
-        return json_encode($commentaireTableau);
+        return json_encode(array("notes" => $commentaireTableau));
     }
 
 }
