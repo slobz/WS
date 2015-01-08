@@ -29,6 +29,8 @@
     Rue   : <input type="text" name="rue"/><br/>
     CP   :  <input type="text" name="cp"/><br/>
     VILLE   : <input type="text" name="ville"/><br/>
+    IMG. B64 <input type="text" name="img1"/>
+    
     
     <input type="hidden" name="methode" value="add"/>
     <input type="hidden" name="service" value="restaurant"/>

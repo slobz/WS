@@ -53,7 +53,7 @@ class RestaurantService extends Service {
                 if($images[$i] != null){
                     
                     $decode = base64_decode($images[$i]);
-                    $uploadOk = file_put_contents("img/".$i, $decode);
+                    $uploadOk = file_put_contents("img/".date(time()).".jpg", $decode);
                    
                     if(!$uploadOk){
                       echo json_encode( array(
