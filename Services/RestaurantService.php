@@ -12,6 +12,8 @@ use Tools;
 
 class RestaurantService extends Service {
 
+    static $cpt;
+    
     public function __construct($em) {
         parent::__construct($em);
     }
@@ -32,8 +34,6 @@ class RestaurantService extends Service {
         $images[] = Tools::getValueFromArray($params, 'img2');
         $images[] = Tools::getValueFromArray($params, 'img3');
 
-
-
         if (!empty($nom) && !empty($description) && !empty($coordonneeX) && !empty($coordonneeY) && !empty($rue) && !empty($ville) && !empty($cp)) {
 
             $restaurant = new Restaurant();
@@ -53,7 +53,7 @@ class RestaurantService extends Service {
                 if($images[$i] != null){
                     
                     $decode = base64_decode($images[$i]);
-                    $uploadOk = file_put_contents("img/".date(time()).".jpg", $decode);
+                    $uploadOk = file_put_contents("img/".date(time().self::$cpt++).".jpg", $decode);
                    
                     if(!$uploadOk){
                       echo json_encode( array(
@@ -90,8 +90,15 @@ class RestaurantService extends Service {
 
             $restaurant = $repo->find($id);
 
+            
+            $images = $restaurant->getImages();
+            foreach ($images as $image){
+                $tableauImages[] = $image->toArray();
+            }
+            
             $json = array(
-                "restaurant" => $restaurant->toArray()
+                "restaurant" => $restaurant->toArray(),
+                "images" => $tableauImages
             );
         } else {
 
