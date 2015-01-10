@@ -97,8 +97,12 @@ class Commentaire {
     public function toArray2(){
         
         foreach ($this as $k=>$v){
-            if($k != "restaurant" && $k != "utilisateur")
+            if($k == "utilisateur"){
+                $array["utilisateur"] = $v->getLogin();
+            }else if ($k != "restaurant"){
                 $array[$k] = $v;
+            }
+            
         }
         
         return $array;

@@ -53,7 +53,8 @@ class RestaurantService extends Service {
                 if($images[$i] != null){
                     
                     $decode = base64_decode($images[$i]);
-                    $uploadOk = file_put_contents("img/".date(time().self::$cpt++).".jpg", $decode);
+                    $path = "img/".date(time().self::$cpt++).".jpg";
+                    $uploadOk = file_put_contents($path, $decode);
                    
                     if(!$uploadOk){
                       echo json_encode( array(
@@ -64,7 +65,7 @@ class RestaurantService extends Service {
                     $image = new \Entity\IF26\Image();
                     $image->setName($i);
                     $image->setRestaurant($restaurant);
-                    $image->setPath("img/".$i);
+                    $image->setPath($path);
                     $this->entityManager->persist($image);
                     $this->entityManager->flush();
                 }
