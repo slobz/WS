@@ -64,13 +64,13 @@ class FavorisService extends Service {
 
         // On recupère ses restaurants favoris
         $restaurants = $user->getRestaurantsFavoris();
+        $tableauRestaurants = array();
         foreach ($restaurants as $restaurant) {
-            $tableauRestaurants[] = $restaurant->toArray();
+            $tableauRestaurants[] = $restaurant->toArray2();
         }
 
         $json = array('error' => false,'restaurants' => $tableauRestaurants);
         return json_encode($json);
-
 
     }
 

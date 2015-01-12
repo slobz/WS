@@ -105,7 +105,7 @@ class RestaurantService extends Service {
 
             $restaurants = $repo->findAll();
             foreach ($restaurants as $restaurant) {
-                $tableauRestaurants[] = $restaurant->toArray();
+                $tableauRestaurants[] = $restaurant->toArray2();
             }
 
 

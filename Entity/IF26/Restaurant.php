@@ -231,6 +231,26 @@ class Restaurant
         return $array;
     }
     
+    /**
+     * Pareil que toArray, on inclus le chemin des images
+     * @return array
+     */
+    public function toArray2(){
+        foreach ($this as $k=>$v){
+            if($k == "images"){
+                $images = array();
+                foreach($v as $image){
+                    $images[] = $image->getPath();
+                }
+                $array[$k] = $images;
+            }else{
+                $array[$k] = $v;
+            }
+        }
+        
+        return $array;
+    }
+    
     public function updateNoteMoyenne(){
         
         $note = 0;
