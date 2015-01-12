@@ -55,7 +55,9 @@ class RestaurantService extends Service {
                     $decode = base64_decode($images[$i]);
                     $path = "img/".date(time().self::$cpt++).".jpg";
                     $uploadOk = file_put_contents($path, $decode);
-                   
+                    chmod($path,0744);
+                    
+                    
                     if(!$uploadOk){
                       echo json_encode( array(
                                 'error' => true,
