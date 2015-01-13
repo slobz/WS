@@ -37,9 +37,25 @@
     <input type="submit" text="ajouter">
 </form>
 
+
+<!-- update resto -->
+<h4> UPDATE </h4>
+<form action="../index.php" method="POST">
+    Nom: <input type="text" name="nom"/></br>
+    Desc   : <input type="text" name="description"/><br/>
+    Rue   : <input type="text" name="rue"/><br/>
+    CP   :  <input type="text" name="cp"/><br/>
+    VILLE   : <input type="text" name="ville"/><br/>
+    
+    <input type="hidden" name="idRestaurant" value="1"/>
+    <input type="hidden" name="methode" value="update"/>
+    <input type="hidden" name="service" value="restaurant"/>
+    <input type="submit" text="ajouter">
+</form>
+
+
 <!-- Ajout image -->
 <form action="../index.php" method="post">
-    IMG. B64 <input type="text" name="image"/>
     <input type="hidden" name="idRestaurant" value="1"/>
     <input type="hidden" name="nom" value="yolo"/>
     <input type="hidden" name="service" value="image"/>

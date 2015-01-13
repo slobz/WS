@@ -13,9 +13,10 @@ use Tools;
 class RestaurantService extends Service {
 
     static $cpt;
-    
+
     public function __construct($em) {
         parent::__construct($em);
+        $this->methodeAutorisees[] = 'update';
     }
 
     //@override
@@ -50,19 +51,19 @@ class RestaurantService extends Service {
 
             // AJout des images
             for ($i = 0; $i < 3; ++$i) {
-                if($images[$i] != null){
-                    
+                if ($images[$i] != null) {
+
                     $decode = base64_decode($images[$i]);
-                    $path = "img/".date(time().self::$cpt++).".jpg";
+                    $path = "img/" . date(time() . self::$cpt++) . ".jpg";
                     $uploadOk = file_put_contents($path, $decode);
-                    chmod($path,0755);
-                    
-                    if(!$uploadOk){
-                      echo json_encode( array(
-                                'error' => true,
-                                'libelleError' => 'Erreur lors de l\'upload'));
+                    chmod($path, 0755);
+
+                    if (!$uploadOk) {
+                        echo json_encode(array(
+                            'error' => true,
+                            'libelleError' => 'Erreur lors de l\'upload'));
                     }
-                    
+
                     $image = new \Entity\IF26\Image();
                     $image->setName($i);
                     $image->setRestaurant($restaurant);
@@ -82,6 +83,53 @@ class RestaurantService extends Service {
         return json_encode($json);
     }
 
+    public function update($params) {
+
+        $repo = $this->entityManager->getRepository(Service::ENTITE_RESTAURANT);
+        $id = Tools::getValueFromArray($params, 'idRestaurant');
+
+        $nom = Tools::getValueFromArray($params, 'nom');
+        $description = Tools::getValueFromArray($params, 'description');
+        $cp = Tools::getValueFromArray($params, 'cp');
+        $ville = Tools::getValueFromArray($params, 'ville');
+        $rue = Tools::getValueFromArray($params, 'rue');
+        
+        if (!empty($id)) {
+            $restaurant = $repo->find($id);
+
+            if (empty($restaurant)) {
+                $json = array(
+                    'error' => true,
+                    'libelleError' => 'Restaurant inconnu'
+                );
+                return json_encode($json);
+            } else {
+
+                // Mis à jour des champs
+                $restaurant->setNom($nom);
+                $restaurant->setDescription($description);
+                $restaurant->setCp($cp);
+                $restaurant->setVille($ville);
+                $restaurant->setRue($rue);
+                 $this->entityManager->flush();
+                
+                $json = array(
+                    'error' => false,
+                    'libelleError' => 'Restaurant mis à jour'
+                );
+                return json_encode($json);
+                
+            }
+        } else {
+
+            $json = array(
+                'error' => true,
+                'libelleError' => 'L\'id du restaurant doit être precisé'
+            );
+            return json_encode($json);
+        }
+    }
+
     //@override
     public function get($params) {
 
@@ -92,12 +140,12 @@ class RestaurantService extends Service {
 
             $restaurant = $repo->find($id);
 
-            
+
             $images = $restaurant->getImages();
-            foreach ($images as $image){
+            foreach ($images as $image) {
                 $tableauImages[] = $image->toArray();
             }
-            
+
             $json = array(
                 "restaurant" => $restaurant->toArray(),
                 "images" => $tableauImages
