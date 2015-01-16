@@ -1,4 +1,6 @@
-﻿<!-- Ahout user -->
+﻿<!-- Fichier contenant des tests utilisés lors de l'élaboration du WebService -->
+
+<!-- Ajout user -->
 <form action="../index.php" method="POST">
     Login: <input type="text" name="login"/></br>
     MDP: <input type="text" name="pwd"/></br>

@@ -2,6 +2,9 @@
 
 namespace Services;
 
+/**
+ * Classe contenant les informations communes à tous les services
+ */
 abstract class Service {
 
     const ENTITE_COMMENTAIRE = 'Entity\IF26\Commentaire';
@@ -10,7 +13,7 @@ abstract class Service {
     
     protected $methodeAutorisees;
     
-    protected $entityManager;
+    protected $entityManager; // Objet permettant l'acces aux entités DOCTRINE
 
     protected $data;
     
@@ -18,7 +21,7 @@ abstract class Service {
         $this->entityManager = $em;
         $this->methodeAutorisees[] = 'add';
     }
-
+    
     public function isMethodeAutorisee($methode){
         return in_array($methode, $this->methodeAutorisees);
     }

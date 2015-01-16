@@ -12,6 +12,9 @@ require_once 'BDD/EntityManagerAccessor.php';
 
 use BDD\EntityManagerAccessor;
 
+/**
+ * Classe permettant de génerer des services dynamiquements
+ */
 class ServiceFactory{
     
     public static function getService($service){

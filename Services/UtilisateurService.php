@@ -16,8 +16,11 @@ class UtilisateurService extends Service {
         parent::__construct($em);
     }
 
-    //@todo SANITIZE?
-    //@override
+    /**
+     * Ajout d'un utilisateur
+     * @param array $params
+     * @return JSON
+     */
     public function add($params) {
         
         $login = Tools::getValueFromArray($params, 'login');
@@ -26,7 +29,6 @@ class UtilisateurService extends Service {
         // On controle la validité du login: 6caractère et composé uniquement de
         // lettre et de chiffre
         $loginOk = preg_match("/^[a-zA-Z0-9]{6,15}$/",$login);
-        
         if(!$loginOk){
              $json = array(
                 'error' => true,
@@ -45,15 +47,13 @@ class UtilisateurService extends Service {
             return json_encode($json);
         }
         
-        
-        
         // On controle l'unicité du login
         $repo = $this->entityManager->getRepository(Service::ENTITE_UTILISATEUR);
         $user = $repo->findOneBy(array('login' => $login));
         
         if(empty($user)){
             // On Hash le mot de passe, la méthode HashPassword attribue automatiquement
-            // une clé de salage génerée alatoirement au mot de passe
+            // une clé de salage génerée aléatoirement au mot de passe
             $t_hasher = new PasswordHash(8, FALSE);
             $hash = $t_hasher->HashPassword($pwd);
 
@@ -77,12 +77,17 @@ class UtilisateurService extends Service {
         return json_encode($json);
     }
 
-    //@override
+    /**
+     * Récupération d'un utilisateur
+     * @param array $params
+     * @return JSON
+     */
     public function get($params) {
 
         $login = Tools::getValueFromArray($params, 'login');
         $pwd = Tools::getValueFromArray($params, 'pwd');
 
+        // Si le login n'est pas spécifié
         if (empty($login)) {
             $json = array(
                 'error' => true,
@@ -107,11 +112,17 @@ class UtilisateurService extends Service {
         return json_encode($json);
     }
 
+    /**
+     * Vérification des bons paramètres de connexion
+     * @param String $user
+     * @param String $pwd
+     * @return boolean
+     */
     private function connexion($user, $pwd) {
 
         $t_hasher = new PasswordHash(8, FALSE);
          
-        // On campare les deux signatures des mots de passe
+        // On compare les deux signatures des mots de passe
         if ($t_hasher->CheckPassword($pwd,$user->getPwd())) { 
             $json = array(
                 'error' => 'false',

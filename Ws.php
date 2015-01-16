@@ -6,9 +6,13 @@ require_once 'Services/ServiceFactory.php';
 
 use Services\ServiceFactory;
 
+/**
+ * Classe faisant appel aux différents WebService en instanciant dynamiquement
+ * des services.
+ */
 class Ws {
 
-    protected $apiKey = 'toto';
+    // Services autorisés
     protected $services = array('commentaire', 'restaurant','utilisateur','favoris','image');
 
     public function __construct() {
@@ -28,13 +32,8 @@ class Ws {
         if(isset($params['methode']))
             return $params['methode'];
     }
-    
-    
 
-    public function postParameters() {
-        
-    }
-
+    // Lancement du service et execution de sa méthode
     public function executeRequest($service,$params) {
         
         $methode = $this->getMethode($params);
@@ -57,6 +56,7 @@ class Ws {
         }
     }
 
+    // Requete GET
     public function getRequest($service, $params) {
 
         $objetService = ServiceFactory::getService($service);
@@ -64,12 +64,13 @@ class Ws {
 
     }
 
+    // Requete POST
     public function postRequest($service, $methode, $params) {
         
         $objetService = ServiceFactory::getService($service);
         
         if($objetService->isMethodeAutorisee($methode)){
-            echo $objetService->$methode($params);
+            echo $objetService->$methode($params); //
         }else{
              $json = array(
                 'error' => true,

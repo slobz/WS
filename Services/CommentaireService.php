@@ -13,9 +13,11 @@ class CommentaireService extends Service {
         parent::__construct($em);
     }
 
-    //@todo Resto/User vide?
-    //@todo Un seul commentaire personne/restaurant
-    //@override
+    /**
+     * Ajout commentaire
+     * @param array $params
+     * @return JSON
+     */
     public function add($params) {
 
         $texte = Tools::getValueFromArray($params, 'texte');
@@ -70,8 +72,14 @@ class CommentaireService extends Service {
         return json_encode($json);
     }
 
+    /**
+     * Récupération des commentaires associés au restaurant
+     * @param int $id
+     * @return JSON
+     */
     public function get($id = null) {
 
+        // Si l'id n'est pas precisé
         if (empty($id)) {
             $json = array('error' => true,
                 'libelleError' => 'Id manquant');

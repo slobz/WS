@@ -14,6 +14,11 @@ class FavorisService extends Service {
         parent::__construct($em);
     }
 
+    /**
+     * Ajout d'un restaurant favoris
+     * @param array $params
+     * @return JSON
+     */
     public function add($params) {
 
         $idUtilisateur = Tools::getValueFromArray($params,'idUtilisateur');
@@ -34,6 +39,11 @@ class FavorisService extends Service {
         
     }
     
+    /**
+     * Récupération des restaurants favoris d'un utilisateur
+     * @param array $params
+     * @return JSON
+     */
     public function get($params) {
 
         $idUtilisateur = Tools::getValueFromArray($params, 'idUtilisateur');

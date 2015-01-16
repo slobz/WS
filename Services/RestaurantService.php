@@ -12,14 +12,18 @@ use Tools;
 
 class RestaurantService extends Service {
 
-    static $cpt;
+    static $cpt; // Compteur utilisé pour la génération du nom aléatoire de l'image
 
     public function __construct($em) {
         parent::__construct($em);
         $this->methodeAutorisees[] = 'update';
     }
 
-    //@override
+    /**
+     * Ajout d'un restaurant
+     * @param array $params
+     * @return JSON
+     */
     public function add($params) {
 
         $nom = Tools::getValueFromArray($params, 'nom');
@@ -54,7 +58,7 @@ class RestaurantService extends Service {
                 if ($images[$i] != null) {
 
                     $decode = base64_decode($images[$i]);
-                    $path = "img/" . date(time() . self::$cpt++) . ".jpg";
+                    $path = "img/" . date(time() . self::$cpt++) . ".jpg"; // Attribution d'un nom aléatoire pour l'image
                     $uploadOk = file_put_contents($path, $decode);
                     chmod($path, 0755);
 
@@ -83,6 +87,11 @@ class RestaurantService extends Service {
         return json_encode($json);
     }
 
+    /**
+     * Mise à jour d'un restaurant
+     * @param array $params
+     * @return JSON
+     */
     public function update($params) {
 
         $repo = $this->entityManager->getRepository(Service::ENTITE_RESTAURANT);
@@ -94,10 +103,12 @@ class RestaurantService extends Service {
         $ville = Tools::getValueFromArray($params, 'ville');
         $rue = Tools::getValueFromArray($params, 'rue');
         
-        if (!empty($id)) {
+        
+        if (!empty($id)) { 
+            
             $restaurant = $repo->find($id);
 
-            if (empty($restaurant)) {
+            if (empty($restaurant)) { // Si aucun restaurant ne correspont à l'id passé en paramètre
                 $json = array(
                     'error' => true,
                     'libelleError' => 'Restaurant inconnu'
@@ -120,7 +131,7 @@ class RestaurantService extends Service {
                 return json_encode($json);
                 
             }
-        } else {
+        } else { // Si l'id du restaurant n'a pas été précisé
 
             $json = array(
                 'error' => true,
@@ -130,16 +141,19 @@ class RestaurantService extends Service {
         }
     }
 
-    //@override
+    /**
+     * Récupération d'un ou tous les restaurants
+     * @param array $params
+     * @return JSON
+     */
     public function get($params) {
 
         $repo = $this->entityManager->getRepository(Service::ENTITE_RESTAURANT);
         $id = Tools::getValueFromArray($params, 'id');
 
-        if (!empty($id)) {
+        if (!empty($id)) { // SI  l'id est précisé on recupère le restaurant associé
 
             $restaurant = $repo->find($id);
-
 
             $images = $restaurant->getImages();
             foreach ($images as $image) {
@@ -150,7 +164,7 @@ class RestaurantService extends Service {
                 "restaurant" => $restaurant->toArray(),
                 "images" => $tableauImages
             );
-        } else {
+        } else { // SINON on récupère l'ensemble des restaurants contenus dans la base
 
             $restaurants = $repo->findAll();
             foreach ($restaurants as $restaurant) {
